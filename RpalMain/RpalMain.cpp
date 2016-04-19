@@ -1,5 +1,9 @@
 // RpalMain.cpp : Defines the entry point for the console application.
 //
+//	Author: Kaizad Avari
+//	RPAL Interpreter
+//	University of Florida
+//
 
 #include "stdafx.h"
 #include <iostream>
