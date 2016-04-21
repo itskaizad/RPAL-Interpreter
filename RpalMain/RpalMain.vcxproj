@@ -146,6 +146,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CSElement.h" />
     <ClInclude Include="CSEMachine.h" />
     <ClInclude Include="ExpTree.h" />
     <ClInclude Include="LexAnalyzer.h" />

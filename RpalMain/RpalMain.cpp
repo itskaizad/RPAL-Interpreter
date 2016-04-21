@@ -14,6 +14,9 @@
 #include "ExpTree.h"
 #include "Parser.h"
 #include "Standardizer.h"
+#include "CSElement.h"
+#include "CSEMachine.h"
+
 using namespace std;
 
 int main(int argc, char* argv[])
@@ -47,6 +50,9 @@ int main(int argc, char* argv[])
 	ExpTree::prettyPrint(mParser.getTopTree());
 	cout << "\n\n STD TREE\n\n" << endl;
 	ExpTree::prettyPrint(Standardizer::standardizeTree(mParser.getTopTree()));
+	cout << "\n\n TEST \n\n" << endl;
+	CSEMachine mMachine(mParser.getTopTree());
+	cout << "\n\n" << endl;
 	cout << "Treminated succesfully! Press any key to continue..." << endl;
 	cin >> content;
 	
