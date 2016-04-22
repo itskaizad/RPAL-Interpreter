@@ -13,6 +13,7 @@ public:
 	int index;
 	string param1;
 	string param2;
+	bool isEnvMarker;
 
 	CSElement(string mVal)
 	{
@@ -20,6 +21,7 @@ public:
 		index = 0;
 		param1 = "";
 		param2 = "";
+		isEnvMarker = false;
 	}
 
 	CSElement(string mVal, int mIndex, string mPar1, string mPar2)
@@ -28,6 +30,7 @@ public:
 		index = mIndex;
 		param1 = mPar1;
 		param2 = mPar2;
+		isEnvMarker = false;
 	}
 
 
