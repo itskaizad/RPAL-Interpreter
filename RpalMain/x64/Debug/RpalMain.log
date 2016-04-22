@@ -1,2 +1,3 @@
 ﻿  RpalMain.cpp
+c:\users\kaizad\documents\visual studio 2015\projects\rpal-interpreter\rpalmain\csemachine.h(54): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   RpalMain.vcxproj -> C:\Users\Kaizad\Documents\Visual Studio 2015\Projects\RPAL-Interpreter\x64\Debug\RpalMain.exe
