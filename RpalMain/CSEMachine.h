@@ -17,6 +17,16 @@ using namespace std;
 
 class CSEMachine
 {
+
+	enum ExpNodeType
+	{
+		STRVALUE,
+		INTVALUE,
+		ID_NAME,
+		GRAM_RULE
+	};
+
+
 private:
 	ExpTree* stdTree;
 	int envCounter;
@@ -26,15 +36,31 @@ private:
 
 	bool printControlCreation, printControls;
 
+private:
+
+	string getTypeString(int type)
+	{
+		if (type == 0)
+			return "STRING";
+		else if (type == 1)
+			return "INTEGER";
+		else if (type == 2)
+			return "IDENT";
+		else if (type == 3)
+			return "RULE";
+		else
+			return "UNKNOWN!";
+	}
+
 public:
 	CSEMachine(ExpTree* mTree)
 	{
 		stdTree = mTree;
 
-		printControlCreation = false;				//Print switch
+		printControlCreation = true;				//Print switch
 		buildControlStructures(mTree, 1);
 
-		printControls = false;						//Print switch
+		printControls = true;						//Print switch
 		if(printControls)
 			printControlStructures();
 		initializeCSEMachine();
@@ -49,7 +75,7 @@ public:
 
 		//Helper to debug how deltas are made for the control structures.
 		if(printControlCreation)
-			cout << index << ".\t" << mTree->nodeValue << " is a " << mTree->nodeType << endl;
+			cout << index << ".\t" << mTree->nodeValue << " is a " << getTypeString(mTree->nodeType) << endl;
 
 		// Make sure controls[index] exists.
 		// If not, youre entering that delta first time, so create it!
