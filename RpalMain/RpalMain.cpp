@@ -53,7 +53,7 @@ int main(int argc, char* argv[])
 	cout << "\n\n TEST \n\n" << endl;
 	CSEMachine mMachine(mParser.getTopTree());
 	cout << "\n\n" << endl;
-	cout << "Treminated succesfully! Press any key to continue..." << endl;
+	cout << "Terminated succesfully! Press any key to continue..." << endl;
 	cin >> content;
 	
 

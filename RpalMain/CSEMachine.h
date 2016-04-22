@@ -48,16 +48,17 @@ public:
 		{
 			string varName = mTree->childNode->nodeValue;
 			currentEl = new CSElement("delta", index + 1, varName, "");
+			controls[index - 1].push_back(*currentEl);
 			buildControlStructures(mTree->childNode->siblingNode, index + 1);
 		}
 		else
 		{
 			currentEl = new CSElement(mTree->nodeValue);
+			controls[index - 1].push_back(*currentEl);
 			buildControlStructures(mTree->childNode, index);
 			buildControlStructures(mTree->siblingNode, index);
 		}
 
-		controls[index-1].push_back(*currentEl);
 		
 	}
 
