@@ -5,9 +5,10 @@
 #include <cstdio>
 #include <stack>
 #include <vector>
+#include <cmath> 
 #include "ExpTree.h"
 #include "CSElement.h"
-
+#include "Environment.h"
 
 using namespace std;
 
@@ -23,18 +24,23 @@ class CSEMachine
 		STRVALUE,
 		INTVALUE,
 		ID_NAME,
-		GRAM_RULE
+		GRAM_RULE,
+		TUPLE,
+		COMMA_LIST,
+		OPERATOR
 	};
 
 
 private:
 	ExpTree* stdTree;
 	int envCounter;
+	Environment *env;
 	vector<vector<CSElement>> controls;
 	stack<CSElement> leftStack;
 	stack<CSElement> rightStack;
-
 	bool printControlCreation, printControls;
+	string lookupVal;
+	int lookupType;
 
 private:
 
@@ -64,8 +70,7 @@ public:
 		if(printControls)
 			printControlStructures();
 		initializeCSEMachine();
-		printCSE();
-		printCSE();
+		//runCSEMachine();
 	}
 
 	void buildControlStructures(ExpTree* mTree, int index)
@@ -91,7 +96,7 @@ public:
 		{
 			string varName = mTree->childNode->nodeValue;
 			int deltaNumber = controls.size();
-			currentEl = new CSElement("lambda", deltaNumber, varName, "");
+			currentEl = new CSElement("lambda", deltaNumber, varName, -1);
 			controls[index - 1].push_back(*currentEl);
 			//if (mTree->childNode != NULL)		Commented him out assuming theres always a right child to LAMBDA.
 			buildControlStructures(mTree->childNode->siblingNode, deltaNumber + 1);
@@ -127,10 +132,11 @@ public:
 		}
 	}
 
-	void pushDeltaOnLeftStack(int delta)
+	void pushDeltaOnStack(int delta)
 	{
+
 		// Create an environment marker for that delta
-		CSElement *freshEnv = new CSElement("env", delta, "", "");
+		CSElement *freshEnv = new CSElement("env", delta, "", -1);
 		freshEnv->isEnvMarker = true;
 
 		//Push the environment marker on both stacks first
@@ -147,7 +153,10 @@ public:
 	void initializeCSEMachine()
 	{
 		//Push delta 0 on the stacks
-		pushDeltaOnLeftStack(0);
+		pushDeltaOnStack(0);
+
+		env = new Environment("", "", GRAM_RULE);
+
 
 		//Set current environment to zero
 		envCounter = 0;
@@ -198,10 +207,119 @@ public:
 		cout << endl << endl;
 	}
 
+	bool lookupVar(string name)
+	{
+		if (env->variable == name)
+		{
+			lookupVal = env->value;
+			lookupType = env->type;
+			return true;
+		}
+		Environment *temp = env->parent;
+		while (temp != NULL)
+		{
+			if (temp->variable == name)
+			{
+				lookupVal = temp->value;
+				lookupType = temp->type;
+				return true;
+			}
+			temp = temp->parent;
+		}
+		return false;
+	}
+
 	void runCSEMachine()		//Assumes there is atleast one delta/environment on the machine
 	{
+		while (!leftStack.empty())
+		{
+			printCSE();
+			processCSEMachine();
+		}
+	}
+
+	void processCSEMachine()
+	{
+		//leftStack.pop();
+
+		// RULE 3
+		if (leftStack.top().value == "not")
+		{
+			leftStack.pop();
+			CSElement node = rightStack.top();
+			rightStack.pop();
+			if (node.value == "true")
+				node.value = "false";
+			else if (node.value == "false")
+				node.value = "true";
+			else
+			{
+				cout << "WTH! Not needs a boolean!" << endl;
+				cin >> lookupVal;
+				exit(0);
+			}
+		}
+		else if (leftStack.top().value == "+")
+		{
+			CSElement op1 = rightStack.top();
+			rightStack.pop();
+			CSElement op2 = rightStack.top();
+			rightStack.pop();
+			int in1 = stoi(op1.value);
+			int in2 = stoi(op2.value);
+			op1.value = to_string(in1 + in2);
+			rightStack.push(op1);
+		}
+		else if (leftStack.top().value == "-")
+		{
+			CSElement op1 = rightStack.top();
+			rightStack.pop();
+			CSElement op2 = rightStack.top();
+			rightStack.pop();
+			int in1 = stoi(op1.value);
+			int in2 = stoi(op2.value);
+			op1.value = to_string(in1 - in2);
+			rightStack.push(op1);
+		}
+		else if (leftStack.top().value == "/")
+		{
+			CSElement op1 = rightStack.top();
+			rightStack.pop();
+			CSElement op2 = rightStack.top();
+			rightStack.pop();
+			int in1 = stoi(op1.value);
+			int in2 = stoi(op2.value);
+			op1.value = to_string(in1 / in2);
+			rightStack.push(op1);
+		}
+		else if (leftStack.top().value == "*")
+		{
+			CSElement op1 = rightStack.top();
+			rightStack.pop();
+			CSElement op2 = rightStack.top();
+			rightStack.pop();
+			int in1 = stoi(op1.value);
+			int in2 = stoi(op2.value);
+			op1.value = to_string(in1 * in2);
+			rightStack.push(op1);
+		}
+		else if (leftStack.top().value == "**")
+		{
+			CSElement op1 = rightStack.top();
+			rightStack.pop();
+			CSElement op2 = rightStack.top();
+			rightStack.pop();
+			int in1 = stoi(op1.value);
+			int in2 = stoi(op2.value);
+			float x = pow(in1, in2);
+			op1.value = to_string(x);
+			rightStack.push(op1);
+		}
+
+
 
 	}
+
 
 	
 };
