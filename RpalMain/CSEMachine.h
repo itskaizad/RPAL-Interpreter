@@ -39,7 +39,7 @@ private:
 	stack<CSElement> leftStack;
 	stack<CSElement> rightStack;
 	bool printControlCreation, printControls;
-	string lookupVal;
+	CSElement *lookupVal;
 	int lookupType;
 
 private:
@@ -155,7 +155,7 @@ public:
 		//Push delta 0 on the stacks
 		pushDeltaOnStack(0);
 
-		env = new Environment("", "", GRAM_RULE);
+		env = new Environment("", new CSElement("none"), GRAM_RULE);
 
 
 		//Set current environment to zero
@@ -212,7 +212,7 @@ public:
 		if (env->variable == name)
 		{
 			lookupVal = env->value;
-			lookupType = env->type;
+			lookupType = env->value->type;
 			return true;
 		}
 		Environment *temp = env->parent;
@@ -221,7 +221,7 @@ public:
 			if (temp->variable == name)
 			{
 				lookupVal = temp->value;
-				lookupType = temp->type;
+				lookupType = temp->value->type;
 				return true;
 			}
 			temp = temp->parent;
@@ -255,7 +255,7 @@ public:
 			else
 			{
 				cout << "WTH! Not needs a boolean!" << endl;
-				cin >> lookupVal;
+				cin >> lookupType;
 				exit(0);
 			}
 		}

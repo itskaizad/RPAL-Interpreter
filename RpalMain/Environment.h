@@ -25,21 +25,19 @@ public:
 	Environment *parent;
 	Environment *child;
 	string variable;
-	string value;
-	int type;
+	CSElement *value;
 
 public:
 
 	Environment()
 	{ }
 
-	Environment(string var, string mValue, int mType)
+	Environment(string var, CSElement *mValue, int mType)
 	{
 		parent = NULL;
 		child = NULL;
 		variable = var;
-		mValue = value;
-		type = mType;
+		value = mValue;
 	}
 
 };
