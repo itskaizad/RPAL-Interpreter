@@ -15,6 +15,13 @@ using namespace std;
 #ifndef CSEMACHINE_H_INCLUDED
 #define CSEMACHINE_H_INCLUDED
 
+//TODO
+//Fix Environment generation (currently linear)
+//Fix attaching multiple variables
+//Fix variable lookup function
+//
+//Write all rules(!!)
+
 //NOTE TO SELF:
 //When the (var) attached to lambda is a comma,
 //attach a string that is a comma separated list of variable names.
