@@ -12,9 +12,20 @@
 
 using namespace std;
 
-
 #ifndef CSEMACHINE_H_INCLUDED
 #define CSEMACHINE_H_INCLUDED
+
+//NOTE TO SELF:
+//When the (var) attached to lambda is a comma,
+//attach a string that is a comma separated list of variable names.
+//On the Environment tree, attach a list of CSElements (same size as tau)
+//Whenever lookup gets called, first check if the variable name has a comma in it!
+//If it does, check the entire list (vector) or just check the first element.
+//This should work.
+//We eliminated standardizing ,[COMMA] and stored multiple variables at a time.
+//We did not standardize tau, and will make ...[DEVELOP]-Glitch found (below)
+//We cannot store two CSElements in one. (Dayum!)
+//
 
 class CSEMachine
 {
@@ -100,6 +111,19 @@ public:
 			controls[index - 1].push_back(*currentEl);
 			//if (mTree->childNode != NULL)		Commented him out assuming theres always a right child to LAMBDA.
 			buildControlStructures(mTree->childNode->siblingNode, deltaNumber + 1);
+		}
+		else if (mTree->nodeValue == "tau")
+		{
+			currentEl = new CSElement(mTree->nodeValue);	//tau
+			controls[index - 1].push_back(*currentEl);		//push tau on CS
+			ExpTree *child = mTree->childNode;
+			while (child != NULL)
+			{
+				buildControlStructures(child, index);
+				// We dont push children on stack because they'll go 
+				// to the else clause below. Hurrah!
+				child = child->siblingNode;
+			}
 		}
 		else
 		{

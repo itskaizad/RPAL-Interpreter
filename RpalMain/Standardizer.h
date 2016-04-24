@@ -10,6 +10,12 @@ using namespace std;
 #ifndef STANDARDIZER_H
 #define STANDARDIZER_H
 
+//NOTE TO SELF:
+//If the left of a Lambda is a comma, we either
+//standardize the tree (which we do not want to do) or
+//we let a delta bind multiple variables. [see rule 13]
+// NEED TO FIX THIS!
+
 class Standardizer
 {
 
@@ -18,6 +24,22 @@ public:
 	{
 		if (tree == NULL)
 			return NULL;
+
+		// Standardize all children of the tau node,
+		// Not just the first two! (Which happens by default).
+		if (tree->nodeValue == "tau")
+		{
+			// Save the sibling! He shouldn't get lost!
+			ExpTree *child = tree->childNode->siblingNode;
+			standardizeTree(tree->childNode);
+			while (child != NULL)
+			{
+				ExpTree *temp = child->siblingNode;
+				standardizeTree(child);
+				child = temp;
+			}
+			return tree;
+		}
 
 		if (tree->childNode != NULL)
 			standardizeTree(tree->childNode);
