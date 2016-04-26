@@ -143,6 +143,7 @@ public:
 		else
 		{
 			currentEl = new CSElement(mTree->nodeValue);
+			currentEl->type = mTree->nodeType;
 			controls[index - 1].push_back(*currentEl);
 			buildControlStructures(mTree->childNode, index);
 			if(mTree->childNode != NULL)
@@ -163,6 +164,8 @@ public:
 			for (int j = 0; j < controls[i].size(); j++)
 			{
 				if (controls[i].at(j).value == "lambda")
+					cout << controls[i].at(j).value << controls[i].at(j).index << " ";
+				else if(controls[i].at(j).value == "tau")
 					cout << controls[i].at(j).value << controls[i].at(j).index << " ";
 				else
 					cout << controls[i].at(j).value << " ";
@@ -216,7 +219,9 @@ public:
 			leftStack.push(tempLeft.top());
 			if(leftStack.top().value == "lambda")
 				cout << leftStack.top().value << leftStack.top().index << " ";
-			else if(leftStack.top().value == "env")
+			else if (leftStack.top().value == "env")
+				cout << leftStack.top().value << leftStack.top().index << " ";
+			else if (leftStack.top().value == "tau")
 				cout << leftStack.top().value << leftStack.top().index << " ";
 			else
 				cout << leftStack.top().value << " ";
@@ -246,30 +251,33 @@ public:
 		cout << endl << endl;
 	}
 
-	bool lookupVar(string name)
+	CSElement* lookupVar(string name)
 	{
-		
+		//Check all entries in the current environment
 		for (int i = 0; i < env->variable.size(); i++)
 		{
 			if (env->variable[i] == name)
 			{
 				lookupVal = env->value[i];
-				lookupType = env->value[i]->type;
-				return true;
+				return lookupVal;
 			}
 		}
+
+		// Check all parent elements till parent is NULL
 		Environment *temp = env->parent;
 		while (temp != NULL)
 		{
-			if (temp->variable[0] == name)
+			for (int i = 0; i < env->variable.size(); i++)
 			{
-				lookupVal = temp->value;
-				lookupType = temp->value->type;
-				return true;
+				if (env->variable[i] == name)
+				{
+					lookupVal = env->value[i];
+					return lookupVal;
+				}
 			}
 			temp = temp->parent;
 		}
-		return false;
+		return NULL;
 	}
 
 	void runCSEMachine()		//Assumes there is atleast one delta/environment on the machine

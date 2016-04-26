@@ -1,4 +1,7 @@
 #pragma once
+#include <iostream>
+#include <string>
+#include <vector>
 
 using namespace std;
 
@@ -19,10 +22,10 @@ class CSElement
 	};
 
 public:
-	vector<CSElement*> taus;
+	vector<CSElement*> taus; 
 	string value;
 	int index;
-	string param1;
+	string boundVar;
 	int parEnv;
 	bool isEnvMarker;
 	bool isTau;
@@ -32,19 +35,19 @@ public:
 	{
 		value = mVal;
 		index = 0;
-		param1 = "";
+		boundVar = "";
 		parEnv = -1;
 		isEnvMarker = false;
 		isTau = false;
 		type = GRAM_RULE;
 	}
 
-	CSElement(string mVal, int mIndex, string mPar1, int parEnv)
+	CSElement(string mVal, int mIndex, string mPar1, int mparEnv)
 	{
 		value = mVal;
 		index = mIndex;
-		param1 = mPar1;
-		parEnv = parEnv;
+		boundVar = mPar1;
+		parEnv = mparEnv;
 		isEnvMarker = false;
 		isTau = false;
 		type = GRAM_RULE;
