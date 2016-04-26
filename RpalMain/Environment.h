@@ -24,8 +24,8 @@ class Environment
 public:
 	Environment *parent;
 	Environment *child;
-	string variable;
-	CSElement *value;
+	vector<string> variable;
+	vector<CSElement*> value;
 
 public:
 
@@ -36,8 +36,8 @@ public:
 	{
 		parent = NULL;
 		child = NULL;
-		variable = var;
-		value = mValue;
+		variable.push_back(var);
+		value.push_back(mValue);
 	}
 
 };

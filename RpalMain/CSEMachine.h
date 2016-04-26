@@ -88,7 +88,7 @@ public:
 		if(printControls)
 			printControlStructures();
 		initializeCSEMachine();
-		//runCSEMachine();
+		runCSEMachine();
 	}
 
 	void buildControlStructures(ExpTree* mTree, int index)
@@ -122,6 +122,14 @@ public:
 		else if (mTree->nodeValue == "tau")
 		{
 			currentEl = new CSElement(mTree->nodeValue);	//tau
+			int tauCnt = 0;
+			ExpTree *runner = mTree->childNode;
+			while (runner != NULL)
+			{
+				tauCnt++;
+				runner = runner->siblingNode;
+			}
+			currentEl->index = tauCnt;
 			controls[index - 1].push_back(*currentEl);		//push tau on CS
 			ExpTree *child = mTree->childNode;
 			while (child != NULL)
@@ -240,16 +248,20 @@ public:
 
 	bool lookupVar(string name)
 	{
-		if (env->variable == name)
+		
+		for (int i = 0; i < env->variable.size(); i++)
 		{
-			lookupVal = env->value;
-			lookupType = env->value->type;
-			return true;
+			if (env->variable[i] == name)
+			{
+				lookupVal = env->value[i];
+				lookupType = env->value[i]->type;
+				return true;
+			}
 		}
 		Environment *temp = env->parent;
 		while (temp != NULL)
 		{
-			if (temp->variable == name)
+			if (temp->variable[0] == name)
 			{
 				lookupVal = temp->value;
 				lookupType = temp->value->type;
@@ -265,7 +277,8 @@ public:
 		while (!leftStack.empty())
 		{
 			printCSE();
-			processCSEMachine();
+			leftStack.pop();
+			//processCSEMachine();
 		}
 	}
 
