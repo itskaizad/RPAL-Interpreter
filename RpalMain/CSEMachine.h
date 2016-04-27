@@ -113,6 +113,19 @@ public:
 		if (mTree->nodeValue == "lambda")
 		{
 			string varName = mTree->childNode->nodeValue;
+			//If varname is , then handle that shiyeat.
+			if (varName == ",")
+			{
+				ExpTree *temp = mTree->childNode->childNode;	//The first element if the IDENT tuple.
+				varName = temp->nodeValue;						//Its value;
+				temp = temp->siblingNode;
+				while (temp != NULL)
+				{
+					varName = varName + "," + temp->nodeValue;
+					temp = temp->siblingNode;
+				}
+				//Now varName is of type x,y,x and ready to go.
+			}
 			int deltaNumber = controls.size();
 			currentEl = new CSElement("lambda", deltaNumber, varName, -1);
 			controls[index - 1].push_back(*currentEl);
@@ -164,7 +177,7 @@ public:
 			for (int j = 0; j < controls[i].size(); j++)
 			{
 				if (controls[i].at(j).value == "lambda")
-					cout << controls[i].at(j).value << controls[i].at(j).index << " ";
+					cout << "(" + controls[i].at(j).boundVar + ")" + controls[i].at(j).value << controls[i].at(j).index << " ";
 				else if(controls[i].at(j).value == "tau")
 					cout << controls[i].at(j).value << controls[i].at(j).index << " ";
 				else

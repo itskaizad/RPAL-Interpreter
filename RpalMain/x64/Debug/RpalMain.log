@@ -1,4 +1,4 @@
 ﻿  RpalMain.cpp
-c:\users\kaizad\documents\visual studio 2015\projects\rpal-interpreter\rpalmain\csemachine.h(116): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-c:\users\kaizad\documents\visual studio 2015\projects\rpal-interpreter\rpalmain\csemachine.h(368): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\kaizad\documents\visual studio 2015\projects\rpal-interpreter\rpalmain\csemachine.h(129): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\users\kaizad\documents\visual studio 2015\projects\rpal-interpreter\rpalmain\csemachine.h(379): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   RpalMain.vcxproj -> C:\Users\Kaizad\Documents\Visual Studio 2015\Projects\RPAL-Interpreter\x64\Debug\RpalMain.exe
